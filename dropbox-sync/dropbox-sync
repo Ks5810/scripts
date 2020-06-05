@@ -1,0 +1,47 @@
+#!/bin/bash
+
+source utils
+
+run() {
+    while inotifywait -r -e modify,create,delete,move $HOME/Documents \
+    $HOME/Pictures; do
+        rsync -avz "$HOME/Documents" "$HOME/Dropbox" --delete
+        rsync -avz "$HOME/Pictures" "$HOME/Dropbox" --delete
+    done
+}
+
+
+parse_params() {
+    local param
+    while [[ $# -gt 0 ]]; do
+        param="$1"
+        shift
+        case $param in
+            -h | --help)
+                script_usage
+                exit 0
+                ;;
+            -r | --run)
+                run "$@"
+                ;;
+            *)
+                script_exit "Invalid parameter was provided: $param" 1
+                ;;
+        esac
+    done
+}
+
+# DESC: Main control flow
+# ARGS: $@ (optional): Arguments provided to the script
+# OUTS: None
+main() {
+    trap script_trap_err ERR
+    trap script_trap_exit EXIT
+
+    script_init "$@"
+    parse_params "$@"
+    colour_init
+    #lock_init system
+}
+
+main "$@"

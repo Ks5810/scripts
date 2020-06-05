@@ -1,0 +1,5 @@
+#! /bin/bash
+## Opens line extention on chromium
+
+extension_id=ophjlpahpchlmihnnnihgmmeilfjmjjc
+nohup chromium-browser --new-window "chrome-extension://$extension_id/index.html" -no-first-run >/dev/null 2>&1 & 

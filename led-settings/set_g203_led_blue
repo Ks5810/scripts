@@ -1,0 +1,6 @@
+#!/bin/bash
+
+## Set g203 led color to light blue
+sudo python3 /home/keisuke/projects/system/led/g203-led/g203-led.py breath 89cff0 
+#solid 89cff0
+
