@@ -1,12 +1,26 @@
-#!/bin/bash
-
+#!/bin/bash -
+#title           : dropbox-sync
+#description     : Defines behaviour of starting script
+#author		     : Keisuke Suzuki
+#usage		     : ./dropbox-sync
+#notes           : Shell utilities functions are derived from
+#                  @ralish https://github.com/ralish/bash-script-template
+#===============================================================================
 source utils
 
+D_ROOT=$HOME/Dropbox
+PATH1=$HOME/Documents
+PATH2=$HOME/Pictures
+D_PATH1=$D_ROOT/Documents
+D_PATH2=$D_ROOT/Pictures
+
+
 run() {
-    while inotifywait -r -e modify,create,delete,move $HOME/Documents \
-    $HOME/Pictures; do
-        rsync -avz "$HOME/Documents" "$HOME/Dropbox" --delete
-        rsync -avz "$HOME/Pictures" "$HOME/Dropbox" --delete
+    while inotifywait -r -e modify,create,delete,move \
+        "$D_ROOT" "$PATH1" "$PATH2"; do
+        ## Unison does not recognize touching a file
+        unison -batch "$PATH1" "$D_PATH1"
+        unison -batch "$PATH2" "$D_PATH2"
     done
 }
 
