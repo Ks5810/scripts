@@ -1,0 +1,97 @@
+#!/bin/bash -
+#title           : create_profile
+#description     : Defines behaviour of starting script
+#author          : Keisuke Suzuki
+#usage           : ./set_profile [profile_name]
+#notes           : Shell utilities functions are derived from
+#                  @ralish https://github.com/ralish/bash-script-template
+#===============================================================================
+source utils
+
+# if variable are not set, set it to white
+check_colors() {
+    white='ffb4a0'
+    if [ -z "${base+x}" ]; then base=$white; fi
+    if [ -z "${logo+x}" ]; then logo=$base; fi
+    if [ -z "${functions+x}" ]; then functions=$base; fi
+    if [ -z "${keys+x}" ]; then keys=$base; fi
+    if [ -z "${fkeys+x}" ]; then fkeys=$base; fi
+    if [ -z "${arrows+x}" ]; then arrows=$base; fi
+    if [ -z "${indicators+x}" ]; then indicators=$base; fi                      
+    if [ -z "${modifiers+x}" ]; then modifiers=$base; fi
+    if [ -z "${numbers+x}" ]; then numbers=$base; fi
+    if [ -z "${alphabets+x}" ]; then alphabets=$base; fi
+    if [ -z "${others+x}" ]; then others=$base; fi
+}
+
+run() {
+    profile_path=$1
+    source "$profile_path"
+    #echo $profile_path
+    check_colors
+
+    declare -a other_keys=('tab' 'capslock' 'space' 'backspace' 'enter' 'shift_left' 'shiftleft' 'shiftl')
+
+    temp_path="./.temp_profile"
+    touch "$temp_path"
+
+    # Write profile commands to $TEMP_PATH
+    echo "##Profile file created from $profile_path" > $temp_path
+    echo "" >> $temp_path
+    echo "g logo $logo" >> $temp_path
+    echo "g functions $functions" >> $temp_path
+    echo "g keys $keys" >> $temp_path
+    echo "g fkeys $fkeys" >> $temp_path
+    echo "g arrows $arrows" >> $temp_path
+    echo "g indicators $indicators" >> $temp_path
+    echo "g modifiers $modifiers" >> $temp_path
+
+    # Set others
+    for other in "${others[@]}"; do
+        echo "k $other $others" >> $temp_path
+    done
+
+    # Set numbers
+    for num in {0..9}; do 
+        echo "k $num $numbers" >> $temp_path
+    done
+
+    # Set alphabets
+    for char in {a..z}; do
+        echo "k $char $alphabets" >> $temp_path
+    done
+
+    ##cat "$temp_path"
+
+    echo "Commit" >> $temp_path
+    echo "c" >> $temp_path
+    gpro-led -pp < $temp_path
+
+
+    cat $temp_path > /etc/g810-led/profile
+    echo "Profile successfully updated"
+}
+
+
+parse_params() {
+    local param
+    while [[ $# -gt 0 ]]; do
+        param="$1"
+        shift
+        run "$param"
+    done
+}
+
+# DESC: Main control flow
+# ARGS: $@ (optional): Arguments provided to the script
+# OUTS: None
+main() {
+    trap script_trap_err ERR
+    trap script_trap_exit EXIT
+
+    script_init "$@"
+    parse_params "$@"
+    #lock_init system
+}
+
+main "$@"

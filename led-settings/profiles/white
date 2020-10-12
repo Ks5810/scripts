@@ -1,0 +1,5 @@
+#!/bin/bash
+
+white=ffb4a0
+
+base=$white

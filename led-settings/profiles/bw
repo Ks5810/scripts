@@ -1,0 +1,16 @@
+#!/bin/bash
+## blue_pink
+
+white=ffb4a0
+black=000000
+
+logo=$white
+functions=$black
+keys=$white
+fkeys=$white
+indicators=$white
+arrows=$white
+modifiers=$white
+alphabets=$black
+numbers=$white
+others=$white

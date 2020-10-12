@@ -1,0 +1,23 @@
+#!/bin/bash
+## blue_pink
+
+lightblue=89cff0
+blue=a8a6e3
+pink=ff699d
+green=99ffa0
+yellow=FFFF41
+white=ffb4a0
+orange=eb6c52
+
+logo=$lightblue
+functions=$blue
+keys=$pink
+fkeys=$pink
+indicators=$orange
+arrows=$orange
+modifiers=$orange
+numbers=$lightblue
+alphabets=$lightblue
+others=$white
+
+

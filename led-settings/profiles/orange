@@ -1,0 +1,5 @@
+#!/bin/bash
+## blue_pink
+
+orange=eb6c52
+base=$orange

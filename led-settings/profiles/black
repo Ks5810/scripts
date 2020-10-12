@@ -1,0 +1,9 @@
+#!/bin/bash
+## blue_pink
+
+black=000000
+white=ffb4a0
+
+logo=$white
+indicators=$white
+base=$black
