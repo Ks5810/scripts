@@ -19,8 +19,8 @@ run() {
     while inotifywait -r -e modify,create,delete,move \
         "$D_ROOT" "$PATH1" "$PATH2"; do
         ## Unison does not recognize touching a file
-        unison -batch "$PATH1" "$D_PATH1"
-        unison -batch "$PATH2" "$D_PATH2"
+        unison -batch "$PATH1" "$D_PATH1" -logfile $HOME/.unision.log
+        unison -batch "$PATH2" "$D_PATH2" -logfile $HOME/.unision.log
     done
 }
 
